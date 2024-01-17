@@ -1,0 +1,119 @@
+openapi: 3.0.0
+info:
+  title: Within API Docs
+  version: 1.0.0
+  description: API docs for within
+paths:
+  /user/auth/signup:
+    post:
+      summary: "endpoint for signup"
+      tags:
+        - onboarding
+        - authentication
+      operationId: signup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignupRequest"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+components:
+  parameters:
+    AuthToken:
+      name: x-auth-token
+      in: header
+      schema:
+        type: string
+        format: uuid
+      required: true
+  schemas:
+    SignupRequest:
+      type: object
+      required:
+        - email
+        - fullName
+        - password
+      properties:
+        email:
+          type: string
+        fullName:
+          type: string
+        regNo:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date-time
+        department:
+          type: string
+        level:
+          type: string
+        password:
+          type: string
+    ErrorResponse:
+      title: DefaultResponse
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - message
+    DefaultResponse:
+      title: DefaultResponse
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        fullName:
+          type: string
+        regNo:
+          type: string
+        dateOfBirth:
+          type: string
+        department:
+          type: string
+        level:
+          type: string
+    TokenResponse:
+      title: TokenResponse
+      type: object
+      properties:
+        token:
+          type: string
+    AuthResponse:
+      title: AuthResponse
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        token:
+          $ref: "#/components/schemas/TokenResponse"
+
+
+
+
