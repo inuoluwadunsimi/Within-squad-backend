@@ -1,4 +1,4 @@
-export interface JoinSpaceRequest {
+export interface CreateSpaceRequest {
   name: string;
   profileImage: string;
   description: string;

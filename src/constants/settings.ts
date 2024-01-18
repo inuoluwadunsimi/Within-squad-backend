@@ -14,9 +14,6 @@ export const config = {
       space: "spaces",
     },
   },
-  google: {
-    clientID: <string>process.env.GOOGLE_CLIENT_ID,
-  },
 
   notifications: {
     expo_access_token: process.env["EXPO_TOKEN"],

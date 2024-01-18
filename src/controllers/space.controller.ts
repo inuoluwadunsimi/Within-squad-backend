@@ -21,3 +21,16 @@ export async function handleCreateSpace(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetSpace(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { spaceId } = req.params;
+  try {
+    const space = await spaceService.getSpace(spaceId);
+    ResponseManager.success(res, { space });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}

@@ -1,13 +1,8 @@
-import { JoinSpaceRequest } from "../interfaces";
-import { v4 as uuidv4 } from "uuid";
+import { BadRequestError, CreateSpaceRequest, Spaces } from "../interfaces";
 import { generateSpaceCode } from "../helpers/utils";
 import { SpaceDb } from "../models/space";
 
-function genUUID() {
-  return uuidv4();
-}
-
-export async function createSpace(body: JoinSpaceRequest): Promise<void> {
+export async function createSpace(body: CreateSpaceRequest): Promise<void> {
   const { name, description, profileImage, user } = body;
 
   const code = await generateSpaceCode();
@@ -19,4 +14,12 @@ export async function createSpace(body: JoinSpaceRequest): Promise<void> {
     spaceCode: code,
     owner: user,
   });
+}
+
+export async function getSpace(spaceId: string): Promise<Spaces> {
+  const space = await SpaceDb.findOne<Spaces>({ _id: spaceId });
+  if (!space) {
+    throw new BadRequestError("space not found");
+  }
+  return space;
 }
