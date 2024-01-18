@@ -8,7 +8,7 @@ app.use(errorHandler());
 
 (async () => {
   // Initialize server
-  const server = app.listen(process.env.APP_PORT || 8000, () => {
+  const server = app.listen(process.env.PORT || 8000, () => {
     connectMongo();
   });
 
