@@ -10,3 +10,8 @@ export interface JoinSpaceRequest {
   spaceCode: string;
   user: string;
 }
+
+export interface LeaveSpaceRequest {
+  spaceId: string;
+  user: string;
+}

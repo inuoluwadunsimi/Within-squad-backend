@@ -67,3 +67,21 @@ export async function handleJoinSpace(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleLeaveSpace(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { spaceId } = req.params;
+  const user = req.userId!;
+  try {
+    await spaceService.leaveSpace({
+      user,
+      spaceId,
+    });
+
+    ResponseManager.success(res, { message: "successfully left space" });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}

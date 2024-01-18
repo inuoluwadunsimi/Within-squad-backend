@@ -3,6 +3,7 @@ import {
   CreateSpaceRequest,
   GetAllSpacesResponse,
   JoinSpaceRequest,
+  LeaveSpaceRequest,
   Spaces,
 } from "../interfaces";
 import { generateSpaceCode } from "../helpers/utils";
@@ -47,7 +48,7 @@ export async function joinSpace(body: JoinSpaceRequest): Promise<void> {
   const { spaceCode, user, spaceCodeInput } = body;
 
   const space = await SpaceDb.findOne<Spaces>({
-    $or: [{ spaceCode: spaceCode }, { spaceCode: spaceCode }],
+    $or: [{ spaceCode: spaceCode }, { spaceCode: spaceCodeInput }],
   });
 
   if (!space) {
@@ -55,4 +56,15 @@ export async function joinSpace(body: JoinSpaceRequest): Promise<void> {
   }
 
   space.members.push(user);
+}
+
+export async function leaveSpace(body: LeaveSpaceRequest): Promise<void> {
+  const { user, spaceId } = body;
+
+  await SpaceDb.updateOne(
+    { _id: spaceId },
+    {
+      $pull: { members: user },
+    }
+  );
 }
