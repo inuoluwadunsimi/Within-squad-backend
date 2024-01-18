@@ -76,12 +76,15 @@
     "webpack-node-externals": "3.0.0"
   },
   "scripts": {
+    "precompile": "NODE_ENV=production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "build:dev": "tsc -w",
     "local:start": " nodemon src/entry/index.ts",
     "start": "node ./dist/entry/index.js",
-    "dev:start": "nodemon ./src/entry/index.ts"
+    "dev:start": "NODE_ENV=development  nodemon src/entry/index.ts",
+    "prod:start": "NODE_ENV=production nodemon src/entry/index.ts"
+
   },
   "author": "Within squadco team",
   "license": "ISC"
