@@ -26,6 +26,7 @@ const SpacesSchema = new Schema<Spaces>(
     spaceCode: {
       type: String,
       required: true,
+      unique: true,
     },
     owner: {
       type: String,

@@ -53,6 +53,74 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  #spaces
+  /spaces/space/{spaceId}:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      summary:  "endpoint to create a space"
+      tags:
+        - space
+      operationId: createSpace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSpace"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+       operationId: getsingleSpace
+       parameters:
+         - $ref : "#/components/parameters/SpaceID"
+       responses:
+         "200":
+           description: "success"
+           content:
+             application/json:
+               schema:
+                 $ref: "#/components/schemas/Space"
+         "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /spaces:
+    parameters:
+      - $ref: '#/components/parameters/AuthToken'
+    get:
+      operationId: getAllSpaces
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllSpacesRequest"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+
+
+
 
 
 
@@ -62,6 +130,13 @@ components:
     AuthToken:
       name: x-auth-token
       in: header
+      schema:
+        type: string
+        format: uuid
+      required: true
+    SpaceID:
+      name: spaceId
+      in: path
       schema:
         type: string
         format: uuid
@@ -154,6 +229,49 @@ components:
         password:
           type: string
           format: password
+    CreateSpace:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+        profileImage:
+          type: string
+        description:
+          type: string
+    Space:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        profileImage:
+          type: string
+        description:
+          type: :string
+        spaceCode:
+          type: string
+        owner:
+          $ref: "#/components/schemas/User"
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    AllSpacesRequest:
+      type: object
+      properties:
+        mySpaces:
+          type: array
+          items:
+            $ref: "#/components/schemas/Space"
+        AllSpaces:
+          type: array
+          items:
+            $ref: "#/components/schemas/Space"
+
 
 
 

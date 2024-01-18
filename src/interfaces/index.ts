@@ -5,4 +5,5 @@ export * from "./models/user.auth.interface";
 export * from "./auth/auth.responses";
 export * from "./auth/auth.requests";
 export * from "./notifications";
-export * from "./space.interface";
+export * from "./models/space.interface";
+export * from "./space.requests";
