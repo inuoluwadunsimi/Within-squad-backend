@@ -24,7 +24,10 @@ export async function createSpace(body: CreateSpaceRequest): Promise<void> {
 }
 
 export async function getSpace(spaceId: string): Promise<Spaces> {
-  const space = await SpaceDb.findOne<Spaces>({ _id: spaceId });
+  const space = await SpaceDb.findOne<Spaces>({ _id: spaceId }).populate([
+    "owner",
+    "members",
+  ]);
   if (!space) {
     throw new BadRequestError("space not found");
   }
@@ -34,9 +37,14 @@ export async function getSpace(spaceId: string): Promise<Spaces> {
 export async function getAllSpaces(
   user: string
 ): Promise<GetAllSpacesResponse> {
-  const mySpaces = await SpaceDb.find<Spaces>({ owner: user });
+  const mySpaces = await SpaceDb.find<Spaces>({ owner: user }).populate([
+    "owner",
+    "members",
+  ]);
 
-  const memberSpaces = await SpaceDb.find<Spaces>({ member: { $in: [user] } });
+  const memberSpaces = await SpaceDb.find<Spaces>({
+    member: { $in: [user] },
+  }).populate(["owner", "members"]);
 
   return {
     mySpaces,
