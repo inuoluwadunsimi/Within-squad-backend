@@ -65,6 +65,7 @@
     "semver": "5.7.1",
     "simple-update-notifier": "1.1.0",
     "supports-color": "5.5.0",
+    "swagger-cli": "^4.0.4",
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "4.6.3",
     "to-regex-range": "5.0.1",

@@ -251,7 +251,7 @@ components:
         profileImage:
           type: string
         description:
-          type: :string
+          type: string
         spaceCode:
           type: string
         owner:
