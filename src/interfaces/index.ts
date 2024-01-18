@@ -7,3 +7,4 @@ export * from "./auth/auth.requests";
 export * from "./notifications";
 export * from "./models/space.interface";
 export * from "./space.requests";
+export * from "./space.responses";

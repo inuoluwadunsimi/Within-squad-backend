@@ -53,7 +53,20 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  #spaces
+  /user/me:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      tags :
+        - user
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+      #spaces
   /spaces/space/{spaceId}:
     parameters:
       - $ref: "#/components/parameters/AuthToken"
@@ -97,6 +110,59 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /spaces/space/join:
+    parameters:
+      - $ref: '#/components/parameters/AuthToken'
+      - $ref: '#/components/parameters/SpaceCode'
+    post:
+      tags:
+        - spaces
+      operationId: joinSpace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JoinSpaceRequest"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /spaces/space/{spaceId}/leave:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+      - $ref: "#/components/parameters/SpaceID"
+    put:
+      tags:
+        - space
+      operationId: leaveSpace
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+
+
+
   /spaces:
     parameters:
       - $ref: '#/components/parameters/AuthToken'
@@ -125,6 +191,7 @@ paths:
 
 
 
+
 components:
   parameters:
     AuthToken:
@@ -132,7 +199,6 @@ components:
       in: header
       schema:
         type: string
-        format: uuid
       required: true
     SpaceID:
       name: spaceId
@@ -141,6 +207,12 @@ components:
         type: string
         format: uuid
       required: true
+    SpaceCode:
+      name: spaceCode
+      in: query
+      schema:
+        type: string
+      required: false
   schemas:
     SignupRequest:
       type: object
@@ -267,10 +339,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Space"
-        AllSpaces:
+        memberSpaces:
           type: array
           items:
             $ref: "#/components/schemas/Space"
+    JoinSpaceRequest:
+      type: object
+      properties:
+        spaceCodeInput:
+          type: string
+
+
 
 
 

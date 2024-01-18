@@ -34,3 +34,36 @@ export async function handleGetSpace(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetAllSpaces(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const user = req.userId!;
+  try {
+    const spaces = await spaceService.getAllSpaces(user);
+    ResponseManager.handleError(res, { spaces });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleJoinSpace(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const user = req.userId!;
+  const { spaceCode } = req.query;
+  const { spaceCodeInput } = req.body;
+  try {
+    await spaceService.joinSpace({
+      user,
+      spaceCodeInput,
+      spaceCode: <string>spaceCode,
+    });
+
+    ResponseManager.success(res, { message: "successfully joined space" });
+  } catch (err: any) {
+    ResponseManager.handleError(res, err);
+  }
+}

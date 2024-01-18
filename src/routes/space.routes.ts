@@ -1,5 +1,10 @@
 import express from "express";
-import { handleCreateSpace, handleGetSpace } from "../controllers";
+import {
+  handleCreateSpace,
+  handleGetAllSpaces,
+  handleGetSpace,
+  handleJoinSpace,
+} from "../controllers";
 import { JwtHelper } from "../helpers/jwt/jwt.helper";
 import { config } from "../constants/settings";
 import { UserTokenDb } from "../models";
@@ -11,6 +16,8 @@ const jwtHelper = new JwtHelper({
 });
 
 router.post("/space", jwtHelper.requirePermission(), handleCreateSpace);
-router.get("/space/:spaceId", jwtHelper.requirePermission, handleGetSpace);
+router.get("/space/:spaceId", jwtHelper.requirePermission(), handleGetSpace);
+router.get("/", jwtHelper.requirePermission(), handleGetAllSpaces);
+router.get("/space/join", jwtHelper.requirePermission(), handleJoinSpace);
 
 export default router;

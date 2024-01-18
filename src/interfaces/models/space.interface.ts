@@ -7,7 +7,7 @@ export interface Spaces extends Document {
   description: string;
   spaceCode: string;
   owner: string;
-  members: string;
+  members: string[];
   createdAt: string;
   updatedAt: string;
 }

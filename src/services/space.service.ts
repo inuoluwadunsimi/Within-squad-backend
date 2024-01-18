@@ -1,4 +1,10 @@
-import { BadRequestError, CreateSpaceRequest, Spaces } from "../interfaces";
+import {
+  BadRequestError,
+  CreateSpaceRequest,
+  GetAllSpacesResponse,
+  JoinSpaceRequest,
+  Spaces,
+} from "../interfaces";
 import { generateSpaceCode } from "../helpers/utils";
 import { SpaceDb } from "../models/space";
 
@@ -22,4 +28,31 @@ export async function getSpace(spaceId: string): Promise<Spaces> {
     throw new BadRequestError("space not found");
   }
   return space;
+}
+
+export async function getAllSpaces(
+  user: string
+): Promise<GetAllSpacesResponse> {
+  const mySpaces = await SpaceDb.find<Spaces>({ owner: user });
+
+  const memberSpaces = await SpaceDb.find<Spaces>({ member: { $in: [user] } });
+
+  return {
+    mySpaces,
+    memberSpaces,
+  };
+}
+
+export async function joinSpace(body: JoinSpaceRequest): Promise<void> {
+  const { spaceCode, user, spaceCodeInput } = body;
+
+  const space = await SpaceDb.findOne<Spaces>({
+    $or: [{ spaceCode: spaceCode }, { spaceCode: spaceCode }],
+  });
+
+  if (!space) {
+    throw new BadRequestError("space code invalid");
+  }
+
+  space.members.push(user);
 }
