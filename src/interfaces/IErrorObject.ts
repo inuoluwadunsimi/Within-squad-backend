@@ -1,4 +1,4 @@
-import { CustomError } from '../helpers';
+import { CustomError } from "../helpers";
 
 type errorData = string | object;
 
@@ -10,20 +10,27 @@ export interface IErrorObject extends Error {
 export class BadRequestError extends CustomError {
   constructor(msg: string) {
     super(400, msg);
-    this.name = 'BadRequestError';
+    this.name = "BadRequestError";
   }
 }
 
 export class UnAuthorizedError extends CustomError {
   constructor(msg?: string) {
-    super(401, msg || 'UnAuthorized');
-    this.name = 'UnAuthorizedError';
+    super(401, msg || "UnAuthorized");
+    this.name = "UnAuthorizedError";
   }
 }
 
 export class NotFoundError extends CustomError {
   constructor(msg?: string) {
-    super(404, msg || 'NotFoundError');
-    this.name = 'NotFoundError';
+    super(404, msg || "NotFoundError");
+    this.name = "NotFoundError";
+  }
+}
+
+export class ServiceUnavailableError extends CustomError {
+  constructor(msg?: string) {
+    super(503, msg || "ServiceUnavailableError");
+    this.name = "ServiceUnavailableError";
   }
 }

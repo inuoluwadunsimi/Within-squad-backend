@@ -2,8 +2,9 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../constants/settings";
 import { v4 as uuidv4 } from "uuid";
+import { type Spaces } from "../interfaces";
 
-const userToken = new Schema(
+const SpacesSchema = new Schema<Spaces>(
   {
     _id: {
       type: String,
@@ -11,23 +12,28 @@ const userToken = new Schema(
         return uuidv4();
       },
     },
-
-    token: { type: String, required: true },
-    email: {
+    name: {
       type: String,
       required: true,
-      lowercase: true,
-      trim: true,
-      unique: true,
     },
-
-    user: {
+    profileImage: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+    },
+    spaceCode: {
+      type: String,
+      required: true,
+    },
+    owner: {
       type: String,
       required: true,
       ref: config.mongodb.collections.user,
     },
+    members: [{ type: String, ref: config.mongodb.collections.user }],
   },
-
   {
     toObject: {
       transform(doc, ret) {
@@ -45,10 +51,11 @@ const userToken = new Schema(
     },
     timestamps: true,
     versionKey: false,
+    //
   }
 );
 
-export const UserTokenDb = mongoose.model(
-  config.mongodb.collections.userToken,
-  userToken
+export const SpaceDb = mongoose.model(
+  config.mongodb.collections.space,
+  SpacesSchema
 );

@@ -29,6 +29,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /user/auth/login:
+    post:
+      summary: "login endpoint"
+      tags:
+        - authentication
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
 
 
 components:
@@ -62,6 +88,10 @@ components:
         level:
           type: string
         password:
+          type: string
+          format: password
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
+        expoToken:
           type: string
     ErrorResponse:
       title: DefaultResponse
@@ -113,6 +143,18 @@ components:
           $ref: "#/components/schemas/User"
         token:
           $ref: "#/components/schemas/TokenResponse"
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+          format: password
+
 
 
 
