@@ -19,6 +19,7 @@ const WalletSchema = new Schema(
     available_balance: {
       type: Number,
       required: true,
+      default: 0,
     },
     pending_balance: {
       type: Number,
