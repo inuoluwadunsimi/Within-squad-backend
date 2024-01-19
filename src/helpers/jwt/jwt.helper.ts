@@ -1,7 +1,8 @@
 import * as jwt from "jsonwebtoken";
 import { type Response } from "express";
 import { type JwtConfig, JwtType } from "./types";
-import { IExpressRequest } from "../../interfaces";
+import { IExpressRequest, Spaces } from "../../interfaces";
+import { SpaceDb } from "../../models/space";
 
 interface GenerateTokenParam {
   email: string;
@@ -84,6 +85,46 @@ export class JwtHelper {
         const decoded = await this.verifyToken(token);
         req.email = decoded.email;
         req.userId = decoded.userId;
+        return next();
+      } catch (err: any) {
+        return this.respondError(res, 403, err);
+      }
+    };
+  }
+
+  requireAdminPermission() {
+    return async (req: IExpressRequest, res: Response, next: Function) => {
+      const token = req.headers["x-auth-token"];
+
+      if (!token) {
+        return this.respondError(res, 403, "No API token");
+      }
+
+      try {
+        if (typeof token !== "string") {
+          return this.respondError(
+            res,
+            403,
+            "Auth token is not a valid string"
+          );
+        }
+
+        const dbToken = await this.UserTokenDb.findOne({ token });
+        if (!dbToken) {
+          return this.respondError(res, 403, "invalid token");
+        }
+
+        const decoded = await this.verifyToken(token);
+        req.email = decoded.email;
+        req.userId = decoded.userId;
+
+        const isAdmin = await SpaceDb.findOne<Spaces>({
+          owner: decoded.userId,
+        });
+        if (isAdmin) {
+          return this.respondError(res, 403, "unauthorized");
+        }
+
         return next();
       } catch (err: any) {
         return this.respondError(res, 403, err);

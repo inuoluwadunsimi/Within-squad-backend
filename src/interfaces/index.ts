@@ -6,5 +6,6 @@ export * from "./auth/auth.responses";
 export * from "./auth/auth.requests";
 export * from "./notifications";
 export * from "./models/space.interface";
-export * from "./space.requests";
-export * from "./space.responses";
+export * from "./space/space.requests";
+export * from "./space/space.responses";
+export * from "./models/payment.interface";

@@ -1,4 +1,4 @@
-import { Spaces } from "./models/space.interface";
+import { Spaces } from "../models/space.interface";
 
 export interface GetAllSpacesResponse {
   mySpaces: Spaces[];

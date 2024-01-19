@@ -9,8 +9,9 @@ import {
 import { JwtHelper } from "../helpers/jwt/jwt.helper";
 import { config } from "../constants/settings";
 import { UserTokenDb } from "../models";
+import paymentRoutes from "./payment.routes";
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const jwtHelper = new JwtHelper({
   privateKey: config.jwtPrivateKey,
   UserTokenDb,
@@ -25,5 +26,7 @@ router.put(
   jwtHelper.requirePermission(),
   handleLeaveSpace
 );
+
+router.use("/space/:spaceId/payment", paymentRoutes);
 
 export default router;

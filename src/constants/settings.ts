@@ -12,10 +12,15 @@ export const config = {
       notification: "notifications",
       userToken: "user_tokens",
       space: "spaces",
+      payment: "payments",
     },
   },
 
   notifications: {
     expo_access_token: process.env["EXPO_TOKEN"],
+  },
+  squad: {
+    secretKey: process.env["SQUAD_SECRET_KEY"] as string,
+    publicKey: process.env["SQUAD_PUBLIC_KEY"] as string,
   },
 };

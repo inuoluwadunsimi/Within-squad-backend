@@ -181,6 +181,101 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /spaces/space/{spaceId}/payment/{paymentId}:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      tags:
+        - payment
+        - spaces
+      operationId: createPayment
+      summary: "endpoint to create a payment"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePaymentRequest"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      operationId: getAPayment
+      summary: "endpoint to get a single space"
+      parameters:
+        - $ref: "#/components/parameters/PaymentID"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "400":
+          description: "error"
+          content:
+            application.json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /spaces/space/{spaceId}/payment/{paymentId}/pay:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/PaymentID"
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      tags:
+        - payment
+      operationId: makePayment
+      summary: "endpoint to make payment for item"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MakePaymentResponse"
+        "400":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+  /spaces/space/{spaceId}/payment:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Payment"
+        "403":
+          description: "error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+
+
+
 
 
 
@@ -202,6 +297,13 @@ components:
       required: true
     SpaceID:
       name: spaceId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    PaymentID:
+      name: paymentId
       in: path
       schema:
         type: string
@@ -348,6 +450,36 @@ components:
       properties:
         spaceCodeInput:
           type: string
+    CreatePaymentRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+    Payment:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        amount:
+          type: number
+        space:
+          type: string
+          format: uuid
+    MakePaymentResponse:
+      type: object
+      properties:
+        paymentLink:
+          type: string
+        name:
+          type: string
+        amount:
+          type: number
 
 
 
