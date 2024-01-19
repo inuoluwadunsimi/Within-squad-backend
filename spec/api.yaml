@@ -346,6 +346,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccountNameResponse"
+  /spaces/space/{spaceId}/wallet/otp:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+      - $ref: "#/components/parameters/SpaceID"
+    post:
+      tags:
+        - space
+        - wallet
+        - payment
+      operationId: requestWithdrwalOtp
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Otp"
   /spaces/space/{spaceId}/announcements:
     parameters:
       - $ref: "#/components/parameters/SpaceID"
@@ -638,14 +655,14 @@ components:
       type: object
       properties:
         bank_name:
-          type: string;
+          type: string
         account_number:
           type: string
     AccountNameResponse:
       type: object
       properties:
         bank_name:
-          type: string;
+          type: string
         account_name:
           type: string
         bank_code:

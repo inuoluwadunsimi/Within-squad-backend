@@ -191,3 +191,5 @@ export async function getAccountName(
 ): Promise<AccountLookupResult> {
   return payWithSquad.accountLookup(body);
 }
+
+export async function requestOtp(spaceId: string): Promise<void> {}
