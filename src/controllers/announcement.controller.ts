@@ -6,4 +6,10 @@ import * as announcementService from "../services/announcement.service";
 export async function handleMakeAnnouncement(
   req: IExpressRequest,
   res: ExpressResponse
-): Promise<void> {}
+): Promise<void> {
+  const { spaceId } = req.body;
+  try {
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}

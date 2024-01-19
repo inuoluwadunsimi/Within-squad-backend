@@ -49,6 +49,6 @@ const AnnouncementSchema = new Schema<Announcement>(
 );
 
 export const AnnouncementDb = mongoose.model(
-  config.mongodb.collections.space,
+  config.mongodb.collections.announcement,
   AnnouncementSchema
 );
