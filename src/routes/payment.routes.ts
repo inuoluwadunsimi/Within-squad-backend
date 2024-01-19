@@ -5,6 +5,7 @@ import { UserTokenDb } from "../models";
 import {
   handleCreatePayment,
   handleGetAllPayments,
+  handleGetPaid,
   handleGetSinglePayment,
   handleGetWallet,
   handleGetWalletTransactions,
@@ -35,5 +36,11 @@ router.get(
   "/wallet/transactions",
   jwtHelper.requireAdminPermission(),
   handleGetWalletTransactions
+);
+
+router.get(
+  "/:paymentId/pay",
+  jwtHelper.requireAdminPermission(),
+  handleGetPaid
 );
 export default router;
