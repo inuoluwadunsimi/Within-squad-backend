@@ -6,8 +6,9 @@ import {
   handleCreatePayment,
   handleGetAllPayments,
   handleGetSinglePayment,
+  handleGetWallet,
   handleMakePayment,
-} from "../controllers/payment.controller";
+} from "../controllers";
 
 const router = express.Router({ mergeParams: true });
 const jwtHelper = new JwtHelper({
@@ -28,4 +29,5 @@ router.post(
   handleMakePayment
 );
 
+router.get("/wallet", jwtHelper.requireAdminPermission(), handleGetWallet);
 export default router;

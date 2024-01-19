@@ -4,7 +4,7 @@ import {
   MakePaymentRequest,
   PaymentStatus,
 } from "../interfaces/payment/payment.request";
-import { PaymentDb } from "../models/payment";
+import { PaymentDb, PaymentAttemptDb } from "../models";
 import {
   BadRequestError,
   Payment,
@@ -16,7 +16,6 @@ import { SquadReceiver } from "../payment/squad.receiver";
 import { MakePaymentResponse } from "../interfaces/payment/payment.response";
 import { v4 as uuidv4 } from "uuid";
 import { UserDb } from "../models";
-import { PaymentAttemptDb } from "../models/payment.attempt";
 import { verifyWebhookSignature } from "../payment/helpers";
 import { WalletDb } from "../models/wallet";
 import { ClerkType, WalletTransactionDb } from "../models/wallet.transaction.";
@@ -145,4 +144,16 @@ export async function verifySquadWebhook(props: {
     });
   }
   return;
+}
+
+export async function getWallet(spaceId: string): Promise<Wallet> {
+  const wallet = await WalletDb.findOne<Wallet>({
+    space: spaceId,
+  });
+
+  if (!wallet) {
+    throw new BadRequestError("no waalet found for this space");
+  }
+
+  return wallet;
 }

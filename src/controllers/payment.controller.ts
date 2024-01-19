@@ -90,3 +90,17 @@ export async function handleVerifyWebhook(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetWallet(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { spaceId } = req.params;
+
+  try {
+    const wallet = await paymentService.getWallet(spaceId);
+    ResponseManager.success(res, { wallet });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
