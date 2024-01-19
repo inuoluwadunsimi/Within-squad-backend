@@ -21,6 +21,7 @@ export enum PaymentStatus {
 export interface MakePaymentRequest {
   user: string;
   paymentId: string;
+  spaceId: string;
 }
 
 export interface AccountLookupInterface {

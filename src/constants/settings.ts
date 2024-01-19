@@ -14,6 +14,8 @@ export const config = {
       space: "spaces",
       payment: "payments",
       paymentAttempt: "paymentAttempts",
+      wallet: "wallets",
+      walletTransactions: "wallet_transactions",
     },
   },
 

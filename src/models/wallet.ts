@@ -2,9 +2,8 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../constants/settings";
 import { v4 as uuidv4 } from "uuid";
-import { PaymentStatus } from "../interfaces/payment/payment.request";
 
-const PaymentAttemtSchema = new Schema(
+const WalletSchema = new Schema(
   {
     _id: {
       type: String,
@@ -12,34 +11,22 @@ const PaymentAttemtSchema = new Schema(
         return uuidv4();
       },
     },
-    payment: {
-      type: String,
-      required: true,
-      ref: config.mongodb.collections.payment,
-    },
-    user: {
-      type: String,
-      required: true,
-      ref: config.mongodb.collections.user,
-    },
     space: {
       type: String,
       required: true,
       ref: config.mongodb.collections.space,
     },
-    status: {
-      type: String,
-      required: true,
-      enums: Object.values(PaymentStatus),
-      default: PaymentStatus.PENDING,
-    },
-    transaction_reference: {
-      type: String,
+    available_balance: {
+      type: Number,
       required: true,
     },
-    amount: {
-      type: String,
-      required: true,
+    pending_balance: {
+      type: Number,
+      default: 0,
+    },
+    lock_withdrawals: {
+      type: Number,
+      default: 0,
     },
   },
   {
@@ -59,10 +46,11 @@ const PaymentAttemtSchema = new Schema(
     },
     timestamps: true,
     versionKey: false,
+    //
   }
 );
 
-export const PaymentAttemptDb = mongoose.model(
-  config.mongodb.collections.paymentAttempt,
-  PaymentAttemtSchema
+export const WalletDb = mongoose.model(
+  config.mongodb.collections.wallet,
+  WalletSchema
 );

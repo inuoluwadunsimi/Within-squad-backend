@@ -59,14 +59,33 @@ export async function handleMakePayment(
   res: ExpressResponse
 ): Promise<void> {
   const user = req.userId!;
-  const { paymentId } = req.params;
+  const { paymentId, spaceId } = req.params;
 
   try {
     const paymentResponse = await paymentService.makePayment({
       user,
       paymentId,
+      spaceId,
     });
     ResponseManager.success(res, { paymentResponse });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleVerifyWebhook(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const signature = req.headers["x-squad-encrypted-body"] as string;
+  const body = req.body;
+
+  try {
+    await paymentService.verifySquadWebhook({
+      body,
+      signature,
+    });
+    ResponseManager.success(res, { message: "success" });
   } catch (err) {
     ResponseManager.handleError(res, err);
   }

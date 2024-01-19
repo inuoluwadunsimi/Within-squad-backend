@@ -4,7 +4,12 @@ import { config } from "../constants/settings";
 import { v4 as uuidv4 } from "uuid";
 import { PaymentStatus } from "../interfaces/payment/payment.request";
 
-const PaymentAttemtSchema = new Schema(
+export enum ClerkType {
+  DEBIT = "DEBIT",
+  CREDIT = "CREDIT",
+}
+
+const WalletTransactionSchema = new Schema(
   {
     _id: {
       type: String,
@@ -12,34 +17,27 @@ const PaymentAttemtSchema = new Schema(
         return uuidv4();
       },
     },
-    payment: {
-      type: String,
-      required: true,
-      ref: config.mongodb.collections.payment,
-    },
-    user: {
-      type: String,
-      required: true,
-      ref: config.mongodb.collections.user,
-    },
     space: {
       type: String,
       required: true,
       ref: config.mongodb.collections.space,
     },
+    wallet: {
+      type: String,
+      required: true,
+      ref: config.mongodb.collections.wallet,
+    },
     status: {
       type: String,
-      required: true,
-      enums: Object.values(PaymentStatus),
+      enum: Object.values(PaymentStatus),
       default: PaymentStatus.PENDING,
     },
-    transaction_reference: {
+    clerkType: {
       type: String,
-      required: true,
+      enum: Object.values(ClerkType),
     },
-    amount: {
+    reason: {
       type: String,
-      required: true,
     },
   },
   {
@@ -59,10 +57,11 @@ const PaymentAttemtSchema = new Schema(
     },
     timestamps: true,
     versionKey: false,
+    //
   }
 );
 
-export const PaymentAttemptDb = mongoose.model(
-  config.mongodb.collections.paymentAttempt,
-  PaymentAttemtSchema
+export const WalletTransactionDb = mongoose.model(
+  config.mongodb.collections.walletTransactions,
+  WalletTransactionSchema
 );

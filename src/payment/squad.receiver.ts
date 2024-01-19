@@ -28,7 +28,7 @@ export class SquadReceiver implements Receiver {
         `${baseUrl}/transaction/initiate`,
         {
           email,
-          amount,
+          amount: amount * 100,
           initiate_type: "inline",
           currency: "NGN",
           transaction_ref: tx_ref,

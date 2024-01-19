@@ -10,3 +10,4 @@ export * from "./space/space.requests";
 export * from "./space/space.responses";
 export * from "./models/payment.interface";
 export * from "./models/payment.attempt.interface";
+export * from "./models/wallet.interface";

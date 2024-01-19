@@ -8,4 +8,6 @@ export interface PaymentAttempt extends Document {
   transaction_reference: string;
   createdAt: string;
   frustratedAt: string;
+  space: string;
+  amount: number;
 }

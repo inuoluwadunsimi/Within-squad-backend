@@ -8,18 +8,23 @@ import {
 } from "../interfaces";
 import { generateSpaceCode } from "../helpers/utils";
 import { SpaceDb } from "../models/space";
+import { WalletDb } from "../models/wallet";
 
 export async function createSpace(body: CreateSpaceRequest): Promise<void> {
   const { name, description, profileImage, user } = body;
 
   const code = await generateSpaceCode();
 
-  await SpaceDb.create({
+  const space = await SpaceDb.create({
     name,
     profileImage,
     description,
     spaceCode: code,
     owner: user,
+  });
+
+  await WalletDb.create({
+    space: space.id,
   });
 }
 

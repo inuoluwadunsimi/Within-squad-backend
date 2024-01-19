@@ -15,6 +15,8 @@ router.use("/health", (req, res) => {
   res.send({ status: "OK" });
 });
 
+router.post("/webhooks");
+
 router.use(routeError);
 
 export default router;

@@ -2,14 +2,24 @@ import {
   CreatePaymentRequest,
   GetAllPaymentRequest,
   MakePaymentRequest,
+  PaymentStatus,
 } from "../interfaces/payment/payment.request";
 import { PaymentDb } from "../models/payment";
-import { BadRequestError, Payment, User } from "../interfaces";
+import {
+  BadRequestError,
+  Payment,
+  PaymentAttempt,
+  User,
+  Wallet,
+} from "../interfaces";
 import { SquadReceiver } from "../payment/squad.receiver";
 import { MakePaymentResponse } from "../interfaces/payment/payment.response";
 import { v4 as uuidv4 } from "uuid";
 import { UserDb } from "../models";
 import { PaymentAttemptDb } from "../models/payment.attempt";
+import { verifyWebhookSignature } from "../payment/helpers";
+import { WalletDb } from "../models/wallet";
+import { ClerkType, WalletTransactionDb } from "../models/wallet.transaction.";
 
 const payWithSquad = new SquadReceiver();
 
@@ -59,7 +69,7 @@ export async function getSinglePayment(paymentId: string): Promise<Payment> {
 export async function makePayment(
   payload: MakePaymentRequest
 ): Promise<MakePaymentResponse> {
-  const { user, paymentId } = payload;
+  const { user, paymentId, spaceId } = payload;
 
   const tx_ref = genUUID();
 
@@ -83,6 +93,8 @@ export async function makePayment(
     payment: paymentId,
     user,
     transaction_reference: tx_ref,
+    space: spaceId,
+    amount: payment.amount,
   });
 
   return {
@@ -90,4 +102,47 @@ export async function makePayment(
     name: userDetails.fullName,
     amount: response.paymentLink,
   };
+}
+
+export async function verifySquadWebhook(props: {
+  body: any;
+  signature: string;
+}): Promise<void> {
+  const { body, signature } = props;
+
+  // condition for unsuccessful webhook not indicated because of issue with abscence in docs
+  const isValidSignature = verifyWebhookSignature(body, signature);
+  if (!isValidSignature) {
+    throw new BadRequestError("invalid webhook signature");
+  }
+
+  const paymentAttempt = await PaymentAttemptDb.findOne<PaymentAttempt>({
+    transaction_reference: body.Body.transaction_reference,
+  });
+  if (!paymentAttempt) {
+    throw new BadRequestError("no transaction with this reference");
+  }
+
+  if (body.Event === "charge_successful") {
+    paymentAttempt.status = PaymentStatus.SUCCESS;
+    await paymentAttempt.save();
+
+    const wallet = await WalletDb.findOneAndUpdate<Wallet>(
+      { space: paymentAttempt.space },
+      { $inc: { available_balance: paymentAttempt.amount } }
+    );
+
+    if (!wallet) {
+      console.log("wahala wahala");
+      new BadRequestError("wallet error");
+    }
+    await WalletTransactionDb.create({
+      space: paymentAttempt.space,
+      wallet: wallet!.id,
+      status: PaymentStatus.SUCCESS,
+      clerkType: ClerkType.CREDIT,
+      reason: `payment from ${paymentAttempt.user} `,
+    });
+  }
+  return;
 }
