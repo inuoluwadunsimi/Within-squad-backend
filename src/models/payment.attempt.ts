@@ -2,9 +2,9 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../constants/settings";
 import { v4 as uuidv4 } from "uuid";
-import { Payment } from "../interfaces";
+import { PaymentStatus } from "../interfaces/payment/payment.request";
 
-const paymentSchema = new Schema<Payment>(
+const PaymentAttemtSchema = new Schema(
   {
     _id: {
       type: String,
@@ -12,26 +12,27 @@ const paymentSchema = new Schema<Payment>(
         return uuidv4();
       },
     },
-    name: { type: String, required: true },
-    description: {
-      type: String,
-      required: false,
-    },
-    amount: {
-      type: Number,
-      required: true,
-    },
-    dueDate: {
-      type: Date,
-      required: true,
-    },
-    space: {
+    payment: {
       type: String,
       required: true,
-      ref: config.mongodb.collections.space,
+      ref: config.mongodb.collections.payment,
+    },
+    user: {
+      type: String,
+      required: true,
+      ref: config.mongodb.collections.user,
+    },
+    status: {
+      type: String,
+      required: true,
+      enums: Object.values(PaymentStatus),
+      default: PaymentStatus.PENDING,
+    },
+    transaction_reference: {
+      type: String,
+      required: true,
     },
   },
-
   {
     toObject: {
       transform(doc, ret) {
@@ -52,7 +53,7 @@ const paymentSchema = new Schema<Payment>(
   }
 );
 
-export const PaymentDb = mongoose.model(
-  config.mongodb.collections.payment,
-  paymentSchema
+export const PaymentAttemptDb = mongoose.model(
+  config.mongodb.collections.paymentAttempt,
+  PaymentAttemtSchema
 );

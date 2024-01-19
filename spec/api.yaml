@@ -257,6 +257,7 @@ paths:
       - $ref: "#/components/parameters/SpaceID"
       - $ref: "#/components/parameters/AuthToken"
     get:
+      operationId: getAllPayments
       responses:
         "200":
           description: "success"
@@ -302,6 +303,14 @@ components:
         type: string
         format: uuid
       required: true
+    DueDate:
+      name: dueDate
+      in: query
+      schema:
+        type: string
+        format: date-time
+      required: false
+
     PaymentID:
       name: paymentId
       in: path
@@ -459,6 +468,9 @@ components:
           type: string
         amount:
           type: number
+        dueDate:
+          type: string
+          format: date-time
     Payment:
       type: object
       properties:

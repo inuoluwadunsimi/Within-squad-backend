@@ -5,6 +5,7 @@ export interface Payment extends Document {
   name: string;
   description: string;
   amount: number;
+  dueDate: Date;
   space: string;
   createdAt: string;
   updatedAt: string;

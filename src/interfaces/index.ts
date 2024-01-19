@@ -9,3 +9,4 @@ export * from "./models/space.interface";
 export * from "./space/space.requests";
 export * from "./space/space.responses";
 export * from "./models/payment.interface";
+export * from "./models/payment.attempt.interface";

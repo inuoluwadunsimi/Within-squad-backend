@@ -13,6 +13,7 @@ export const config = {
       userToken: "user_tokens",
       space: "spaces",
       payment: "payments",
+      paymentAttempt: "paymentAttempts",
     },
   },
 
