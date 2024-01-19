@@ -77,7 +77,7 @@ export async function login(payload: LoginRequest): Promise<AuthResponse> {
   const email = payload.email.toLowerCase();
   const { password } = payload;
 
-  const user = await UserAuthDb.findOne<UserAuth>({ email });
+  const user = await UserDb.findOne<UserAuth>({ email });
   if (!user) {
     throw new BadRequestError("invalid credentials");
   }
@@ -92,7 +92,10 @@ export async function login(payload: LoginRequest): Promise<AuthResponse> {
     userId: user.user,
   });
 
-  console.log(token);
+  const userDetails = await UserDb.findOne<User>({ email });
+  if (!userDetails) {
+    throw new BadRequestError("error");
+  }
 
   await UserTokenDb.updateOne(
     { email },
@@ -106,7 +109,7 @@ export async function login(payload: LoginRequest): Promise<AuthResponse> {
     }
   );
   return {
-    user: user as unknown as User,
+    user: userDetails,
     token: token,
   };
 }

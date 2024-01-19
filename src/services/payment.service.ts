@@ -172,7 +172,14 @@ export async function getWalletTransactions(
   return walletTransactions;
 }
 
-export async function requestWithdrawalOtp(spaceId: string): Promise<string> {
-  const otp = genUUID();
-  return otp;
+export async function getPaidMembers(
+  paymentId: string
+): Promise<PaymentAttempt[]> {
+  const payments = await PaymentAttemptDb.find<PaymentAttempt>({
+    status: PaymentStatus.SUCCESS,
+    payment: paymentId,
+  })
+    .select("user")
+    .populate("user");
+  return payments;
 }

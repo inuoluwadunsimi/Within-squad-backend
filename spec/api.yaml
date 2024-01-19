@@ -250,6 +250,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /spaces/space/{spaceId}/payment/{paymentId}/paid:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/PaymentID"
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      operationId: getAllMembersthathavepaid
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
 
 
   /spaces/space/{spaceId}/payment:
@@ -561,6 +577,10 @@ components:
 
     Otp:
       type: string
+
+
+
+
 
 
 

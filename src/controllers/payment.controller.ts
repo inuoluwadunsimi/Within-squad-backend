@@ -117,3 +117,16 @@ export async function handleGetWalletTransactions(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetPaid(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { paymentId } = req.params;
+  try {
+    const paidMembers = await paymentService.getPaidMembers(paymentId);
+    ResponseManager.success(res, { paidMembers });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
