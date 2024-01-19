@@ -1,39 +1,39 @@
-require('dotenv').config();
+require("dotenv").config();
 
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
-import express, { NextFunction, Request, Response } from 'express';
-import compression from 'compression';
-import helmet from 'helmet';
-import methodOverride from 'method-override';
-import * as swaggerUi from 'swagger-ui-express';
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import express, { NextFunction, Request, Response } from "express";
+import compression from "compression";
+import helmet from "helmet";
+import methodOverride from "method-override";
+import * as swaggerUi from "swagger-ui-express";
 
-const swaggerSpec = require('./configuration/swagger');
+const swaggerSpec = require("./configuration/swagger");
 
-import ApiRoutes from './routes'
-const isProduction: boolean = process.env.NODE_ENV === 'production';
+import ApiRoutes from "./routes";
+const isProduction: boolean = process.env.NODE_ENV === "production";
 
 const app = express();
 
-app.set('port', process.env.APP_PORT);
-app.set('env', process.env.NODE_ENV);
+app.set("port", process.env.APP_PORT);
+app.set("env", process.env.NODE_ENV);
 
 app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-app.use(
-  compression({
-    filter: (req: Request, res: Response) => {
-      if (req.headers['x-no-compression']) {
-        // don't compress responses with this request header
-        return false;
-      }
-      // fallback to standard filter function
-      return compression.filter(req, res);
-    },
-  }),
-);
+// app.use(
+//   compression({
+//     filter: (req: Request, res: Response) => {
+//       if (req.headers['x-no-compression']) {
+//         // don't compress responses with this request header
+//         return false;
+//       }
+//       // fallback to standard filter function
+//       return compression.filter(req, res);
+//     },
+//   }),
+// );
 
 /**
  * Helmet for additional server security
@@ -42,10 +42,10 @@ app.use(
  */
 app.use(helmet());
 
-app.disable('x-powered-by');
+app.disable("x-powered-by");
 
 app.use(methodOverride());
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const router = express.Router();
 
@@ -55,8 +55,8 @@ app.use(router);
 
 // Force all requests on production to be served over https
 app.use(function (req, res, next) {
-  if (req.headers['x-forwarded-proto'] !== 'https' && isProduction) {
-    const secureUrl = 'https://' + req.hostname + req.originalUrl;
+  if (req.headers["x-forwarded-proto"] !== "https" && isProduction) {
+    const secureUrl = "https://" + req.hostname + req.originalUrl;
     res.redirect(302, secureUrl);
   }
 

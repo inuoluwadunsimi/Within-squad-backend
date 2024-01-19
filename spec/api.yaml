@@ -211,7 +211,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
     get:
       operationId: getAPayment
-      summary: "endpoint to get a single space"
+      summary: "endpoint to get a single payment"
       parameters:
         - $ref: "#/components/parameters/PaymentID"
       responses:
@@ -292,19 +292,22 @@ paths:
               schema:
                 $ref: "#/components/schemas/Wallet"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  /spaces/space/{spaceId}/payment/wallet/transactions:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/AuthToken"
+    get:
+      tags:
+        - space
+        - wallet
+      operationId: getTransactions
+      responses:
+        "200":
+          description: "sucess"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WalletTransactions"
 
 
 
@@ -528,6 +531,19 @@ components:
           type: number
         lock_withdrawals:
           type: number
+
+    WalletTransactions:
+      type: object
+      properties:
+        clerkType:
+          type: string
+        amount:
+          type: string
+        reason:
+          type: string
+
+
+
 
 
 

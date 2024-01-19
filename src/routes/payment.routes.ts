@@ -7,6 +7,7 @@ import {
   handleGetAllPayments,
   handleGetSinglePayment,
   handleGetWallet,
+  handleGetWalletTransactions,
   handleMakePayment,
 } from "../controllers";
 
@@ -30,4 +31,9 @@ router.post(
 );
 
 router.get("/wallet", jwtHelper.requireAdminPermission(), handleGetWallet);
+router.get(
+  "/wallet/transactions",
+  jwtHelper.requireAdminPermission(),
+  handleGetWalletTransactions
+);
 export default router;

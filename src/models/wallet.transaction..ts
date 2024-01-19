@@ -36,6 +36,10 @@ const WalletTransactionSchema = new Schema(
       type: String,
       enum: Object.values(ClerkType),
     },
+    amount: {
+      type: Number,
+      required: true,
+    },
     reason: {
       type: String,
     },

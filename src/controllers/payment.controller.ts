@@ -104,3 +104,16 @@ export async function handleGetWallet(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetWalletTransactions(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { spaceId } = req.params;
+  try {
+    const transactions = await paymentService.getWalletTransactions(spaceId);
+    ResponseManager.success(res, { transactions });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}

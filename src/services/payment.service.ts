@@ -11,6 +11,7 @@ import {
   PaymentAttempt,
   User,
   Wallet,
+  WalletTransactions,
 } from "../interfaces";
 import { SquadReceiver } from "../payment/squad.receiver";
 import { MakePaymentResponse } from "../interfaces/payment/payment.response";
@@ -141,6 +142,7 @@ export async function verifySquadWebhook(props: {
       status: PaymentStatus.SUCCESS,
       clerkType: ClerkType.CREDIT,
       reason: `payment from ${paymentAttempt.user} `,
+      amount: paymentAttempt.amount,
     });
   }
   return;
@@ -156,4 +158,16 @@ export async function getWallet(spaceId: string): Promise<Wallet> {
   }
 
   return wallet;
+}
+
+export async function getWalletTransactions(
+  spaceId: string
+): Promise<WalletTransactions[]> {
+  const walletTransactions = await WalletTransactionDb.find<WalletTransactions>(
+    {
+      space: spaceId,
+    }
+  ).select("-space -wallet -status ");
+
+  return walletTransactions;
 }

@@ -9,3 +9,14 @@ export interface Wallet extends Document {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface WalletTransactions extends Document {
+  id: string;
+  space: string;
+  wallet: string;
+  clerkType: string;
+  reason: string;
+  createdAt: string;
+  updatedAt: string;
+  amount: number;
+}
