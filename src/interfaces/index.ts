@@ -11,3 +11,5 @@ export * from "./space/space.responses";
 export * from "./models/payment.interface";
 export * from "./models/payment.attempt.interface";
 export * from "./models/wallet.interface";
+export * from "./models/wallet.interface";
+export * from "./models/announcement.interface";

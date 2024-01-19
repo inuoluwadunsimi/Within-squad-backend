@@ -2,9 +2,9 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../constants/settings";
 import { v4 as uuidv4 } from "uuid";
-import { type Spaces } from "../interfaces";
+import { type Announcement } from "../interfaces";
 
-const SpacesSchema = new Schema<Spaces>(
+const AnnouncementSchema = new Schema<Announcement>(
   {
     _id: {
       type: String,
@@ -12,28 +12,20 @@ const SpacesSchema = new Schema<Spaces>(
         return uuidv4();
       },
     },
-    name: {
+    space: {
       type: String,
       required: true,
+      ref: config.mongodb.collections.space,
     },
-    profileImage: {
-      type: String,
-      required: true,
-    },
+
     description: {
       type: String,
+      required: true,
     },
-    spaceCode: {
+    title: {
       type: String,
       required: true,
-      unique: true,
     },
-    owner: {
-      type: String,
-      required: true,
-      ref: config.mongodb.collections.user,
-    },
-    members: [{ type: String, ref: config.mongodb.collections.user }],
   },
   {
     toObject: {
@@ -56,7 +48,7 @@ const SpacesSchema = new Schema<Spaces>(
   }
 );
 
-export const AnnDb = mongoose.model(
+export const AnnouncementDb = mongoose.model(
   config.mongodb.collections.space,
-  SpacesSchema
+  AnnouncementSchema
 );

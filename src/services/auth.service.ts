@@ -77,7 +77,7 @@ export async function login(payload: LoginRequest): Promise<AuthResponse> {
   const email = payload.email.toLowerCase();
   const { password } = payload;
 
-  const user = await UserDb.findOne<UserAuth>({ email });
+  const user = await UserAuthDb.findOne<UserAuth>({ email });
   if (!user) {
     throw new BadRequestError("invalid credentials");
   }

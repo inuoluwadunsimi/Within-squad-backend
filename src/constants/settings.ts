@@ -16,6 +16,7 @@ export const config = {
       paymentAttempt: "paymentAttempts",
       wallet: "wallets",
       walletTransactions: "wallet_transactions",
+      announcement: "announcements",
     },
   },
 

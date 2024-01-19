@@ -341,6 +341,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Otp"
+  /spaces/space/{spaceId}/announcements:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      tags:
+        - space
+        - announcement
+      operationId: makeAnnouncment
+      requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MakeAnnouncement"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+    get:
+      tags:
+        - space
+        - announcment
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Announcement"
+
+
 
 
 
@@ -577,6 +612,26 @@ components:
 
     Otp:
       type: string
+
+    MakeAnnouncement:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    Announcement:
+      type: object
+      properties:
+        id:
+          type: string
+        space:
+          type: string
+        title:
+          type: string
+
+
+
 
 
 
