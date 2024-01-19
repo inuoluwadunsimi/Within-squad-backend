@@ -10,13 +10,13 @@ export async function handleCreateSpace(
   const { name, description, profileImage } = req.body;
   const user = req.userId!;
   try {
-    await spaceService.createSpace({
+    const space = await spaceService.createSpace({
       name,
       description,
       profileImage,
       user,
     });
-    ResponseManager.success(res, { message: "space successfully created" });
+    ResponseManager.success(res, { space });
   } catch (err: any) {
     ResponseManager.handleError(res, err);
   }

@@ -1,6 +1,7 @@
 import {
   BadRequestError,
   CreateSpaceRequest,
+  CreateSpaceResponse,
   GetAllSpacesResponse,
   JoinSpaceRequest,
   LeaveSpaceRequest,
@@ -10,7 +11,9 @@ import { generateSpaceCode } from "../helpers/utils";
 import { SpaceDb } from "../models/space";
 import { WalletDb } from "../models/wallet";
 
-export async function createSpace(body: CreateSpaceRequest): Promise<void> {
+export async function createSpace(
+  body: CreateSpaceRequest
+): Promise<CreateSpaceResponse> {
   const { name, description, profileImage, user } = body;
 
   const code = await generateSpaceCode();
@@ -26,6 +29,12 @@ export async function createSpace(body: CreateSpaceRequest): Promise<void> {
   await WalletDb.create({
     space: space.id,
   });
+
+  return {
+    spaceCode: code,
+    name: name,
+    spaceId: space.id,
+  };
 }
 
 export async function getSpace(spaceId: string): Promise<Spaces> {

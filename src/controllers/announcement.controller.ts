@@ -30,7 +30,6 @@ export async function handleGetAnnouncements(
 
   try {
     const announcements = await announcementService.GetAnnouncments(spaceId);
-
     ResponseManager.success(res, { announcements });
   } catch (err) {
     ResponseManager.handleError(res, err);
