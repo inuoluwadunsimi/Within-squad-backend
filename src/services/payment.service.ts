@@ -1,4 +1,5 @@
 import {
+  AccountLookupResult,
   CreatePaymentRequest,
   GetAllPaymentRequest,
   MakePaymentRequest,
@@ -20,6 +21,7 @@ import { UserDb } from "../models";
 import { verifyWebhookSignature } from "../payment/helpers";
 import { WalletDb } from "../models/wallet";
 import { ClerkType, WalletTransactionDb } from "../models/wallet.transaction.";
+import { AccountLookupInterface } from "../interfaces/payment/payment.request";
 
 const payWithSquad = new SquadReceiver();
 
@@ -182,4 +184,10 @@ export async function getPaidMembers(
     .select("user")
     .populate("user");
   return payments;
+}
+
+export async function getAccountName(
+  body: AccountLookupInterface
+): Promise<AccountLookupResult> {
+  return payWithSquad.accountLookup(body);
 }

@@ -324,7 +324,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WalletTransactions"
-  /spaces/space/{spaceId}/payment/wallet/withdrawOtp:
+  /spaces/space/{spaceId}/payment/wallet/accountName:
     parameters:
       - $ref: "#/components/parameters/SpaceID"
       - $ref: "#/components/parameters/AuthToken"
@@ -333,14 +333,19 @@ paths:
         - wallet
         - payment
         - withdraw
-      operationId: requestWithdrawalOtp
+      operationId: requstAccountName
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GetAccountNameRequest"
       responses:
         200:
           description: "success"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Otp"
+                $ref: "#/components/schemas/AccountNameResponse"
   /spaces/space/{spaceId}/announcements:
     parameters:
       - $ref: "#/components/parameters/SpaceID"
@@ -365,7 +370,7 @@ paths:
     get:
       tags:
         - space
-        - announcment
+        - announcement
       responses:
         "200":
           description: "success"
@@ -629,6 +634,25 @@ components:
           type: string
         title:
           type: string
+    GetAccountNameRequest:
+      type: object
+      properties:
+        bank_name:
+          type: string;
+        account_number:
+          type: string
+    AccountNameResponse:
+      type: object
+      properties:
+        bank_name:
+          type: string;
+        account_name:
+          type: string
+        bank_code:
+          type: string
+
+
+
 
 
 

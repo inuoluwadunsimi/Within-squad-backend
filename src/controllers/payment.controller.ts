@@ -130,3 +130,19 @@ export async function handleGetPaid(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleGetAccountName(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { bank_name, account_number } = req.body;
+  try {
+    const AccountNameResponse = await paymentService.getAccountName({
+      bank_name,
+      account_number,
+    });
+    ResponseManager.success(res, { AccountNameResponse });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
