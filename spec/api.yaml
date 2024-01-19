@@ -308,6 +308,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WalletTransactions"
+  /spaces/space/{spaceId}/payment/wallet/withdrawOtp:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      tags:
+        - wallet
+        - payment
+        - withdraw
+      operationId: requestWithdrawalOtp
+      responses:
+        200:
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Otp"
 
 
 
@@ -541,6 +558,9 @@ components:
           type: string
         reason:
           type: string
+
+    Otp:
+      type: string
 
 
 

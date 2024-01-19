@@ -41,6 +41,7 @@ export async function handleLogin(
   res: ExpressResponse
 ): Promise<void> {
   const { email, password } = req.body;
+
   try {
     const authResponse = await authService.login({
       email,

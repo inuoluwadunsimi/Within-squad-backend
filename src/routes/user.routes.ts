@@ -10,6 +10,6 @@ const jwtHelper = new JwtHelper({
   UserTokenDb,
 });
 
-router.post("/me", jwtHelper.requirePermission(), handleGetUser);
+router.get("/me", jwtHelper.requirePermission(), handleGetUser);
 
 export default router;

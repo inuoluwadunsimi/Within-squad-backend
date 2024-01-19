@@ -171,3 +171,8 @@ export async function getWalletTransactions(
 
   return walletTransactions;
 }
+
+export async function requestWithdrawalOtp(spaceId: string): Promise<string> {
+  const otp = genUUID();
+  return otp;
+}

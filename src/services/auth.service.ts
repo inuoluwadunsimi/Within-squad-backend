@@ -92,14 +92,17 @@ export async function login(payload: LoginRequest): Promise<AuthResponse> {
     userId: user.user,
   });
 
+  console.log(token);
+
   await UserTokenDb.updateOne(
-    {
-      email: email,
-    },
+    { email },
     {
       token,
       email,
       user: user.id,
+    },
+    {
+      upsert: true,
     }
   );
   return {

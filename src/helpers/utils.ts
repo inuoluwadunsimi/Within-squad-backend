@@ -1,6 +1,6 @@
 import { SpaceDb } from "../models/space";
-import { Spaces } from "../interfaces";
 import crypto from "crypto";
+import * as randomString from "randomstring";
 
 export async function generateSpaceCode() {
   const existingCodes = await SpaceDb.distinct("spaceCode");
@@ -15,4 +15,11 @@ export async function generateSpaceCode() {
       return code;
     }
   }
+}
+
+export function generateOtp(): string {
+  return randomString.generate({
+    length: 6,
+    charset: "numeric",
+  });
 }
