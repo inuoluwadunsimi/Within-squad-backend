@@ -6,6 +6,8 @@ export async function handleCreateSchedule(
   req: IExpressRequest,
   res: ExpressResponse
 ): Promise<void> {
+  const { spaceId } = req.params;
+
   try {
   } catch (err) {
     ResponseManager.handleError(res, err);

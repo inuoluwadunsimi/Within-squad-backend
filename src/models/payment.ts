@@ -23,7 +23,6 @@ const paymentSchema = new Schema<Payment>(
     },
     dueDate: {
       type: Date,
-      required: true,
     },
     space: {
       type: String,
