@@ -8,3 +8,10 @@ export interface Schedule extends Document {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CreateScheduleInterface {
+  title: string;
+  day: string;
+  time: Date;
+  spaceId: string;
+}

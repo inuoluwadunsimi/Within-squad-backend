@@ -418,8 +418,40 @@ paths:
               schema:
                 items:
                   $ref: "#/components/schemas/Announcement"
-
-
+  /spaces/space/{spaceId}/schedules:
+    parameters:
+      - $ref: "#/components/parameters/SpaceID"
+      - $ref: "#/components/parameters/AuthToken"
+    post:
+      tags:
+        - space
+        - schedules
+      operationId: createSchedule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSchedule"
+      responses:
+        "200":
+          description: "successful"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+    get:
+      tags:
+        - space
+        - schedules
+      operationId: getAllSchedules
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/Schedule"
 
 
 
@@ -611,6 +643,9 @@ components:
     Payment:
       type: object
       properties:
+        id:
+          type: string
+          format: uuid
         name:
           type: string
         description:
@@ -695,6 +730,29 @@ components:
           type: string
         amount:
           type: number
+    CreateSchedule:
+      properties:
+        title:
+          type: string
+        day:
+          type: string
+        time:
+          type: string
+          format: date-time
+
+    Schedule:
+      type: object
+      properties:
+        title:
+          type: string
+        day:
+          type: string
+        time:
+          type: string
+          format: date-time
+
+
+
 
 
 
