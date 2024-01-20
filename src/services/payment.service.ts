@@ -133,28 +133,26 @@ export async function verifySquadWebhook(props: {
     throw new BadRequestError("no transaction with this reference");
   }
 
-  if (body.Event === "charge_successful") {
-    paymentAttempt.status = PaymentStatus.SUCCESS;
-    await paymentAttempt.save();
+  paymentAttempt.status = PaymentStatus.SUCCESS;
+  await paymentAttempt.save();
 
-    const wallet = await WalletDb.findOneAndUpdate<Wallet>(
-      { space: paymentAttempt.space },
-      { $inc: { available_balance: paymentAttempt.amount } }
-    );
+  const wallet = await WalletDb.findOneAndUpdate<Wallet>(
+    { space: paymentAttempt.space },
+    { $inc: { available_balance: paymentAttempt.amount } }
+  );
 
-    if (!wallet) {
-      console.log("wahala wahala");
-      new BadRequestError("wallet error");
-    }
-    await WalletTransactionDb.create({
-      space: paymentAttempt.space,
-      wallet: wallet!.id,
-      status: PaymentStatus.SUCCESS,
-      clerkType: ClerkType.CREDIT,
-      reason: `payment from ${paymentAttempt.user} `,
-      amount: paymentAttempt.amount,
-    });
+  if (!wallet) {
+    console.log("wahala wahala");
+    new BadRequestError("wallet error");
   }
+  await WalletTransactionDb.create({
+    space: paymentAttempt.space,
+    wallet: wallet!.id,
+    status: PaymentStatus.SUCCESS,
+    clerkType: ClerkType.CREDIT,
+    reason: `payment from ${paymentAttempt.user} `,
+    amount: paymentAttempt.amount,
+  });
   return;
 }
 
