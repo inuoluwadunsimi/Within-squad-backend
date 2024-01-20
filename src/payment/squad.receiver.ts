@@ -24,8 +24,10 @@ export class SquadReceiver implements Receiver {
     try {
       const { amount, email, tx_ref } = body;
 
+      console.log("");
+
       const response = await axios.post(
-        `${baseUrl}/transaction/initiate`,
+        "https://sandbox-api-d.squadco.com/transaction/initiate",
         {
           email,
           amount: amount * 100,
@@ -41,18 +43,19 @@ export class SquadReceiver implements Receiver {
           },
         }
       );
+      console.log(response);
 
       if (response.status !== 200) {
-        console.log(response);
+        // console.log(response.data);
         throw new ServiceUnavailableError("service unavailable");
       }
 
       return {
-        paymentLink: response.data.checkout_url,
+        paymentLink: response.data.data.checkout_url,
         status: response.data.status,
       };
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       throw {
         code: 500,
         data: err,

@@ -9,6 +9,6 @@ const jwtHelper = new JwtHelper({
   UserTokenDb,
 });
 
-router.post();
+router.post("");
 
 export default router;

@@ -108,7 +108,7 @@ export async function makePayment(
   return {
     paymentLink: response.paymentLink,
     name: userDetails.fullName,
-    amount: response.paymentLink,
+    amount: payment.amount,
   };
 }
 
