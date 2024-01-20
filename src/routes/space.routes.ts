@@ -17,6 +17,8 @@ const jwtHelper = new JwtHelper({
   UserTokenDb,
 });
 
+router.use("/space/:spaceId/payment", paymentRoutes);
+
 router.post("/space", jwtHelper.requirePermission(), handleCreateSpace);
 router.get("/space/:spaceId", jwtHelper.requirePermission(), handleGetSpace);
 router.get("/", jwtHelper.requirePermission(), handleGetAllSpaces);
@@ -26,7 +28,5 @@ router.put(
   jwtHelper.requirePermission(),
   handleLeaveSpace
 );
-
-router.use("/space/:spaceId/payment", paymentRoutes);
 
 export default router;

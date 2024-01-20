@@ -23,6 +23,7 @@ const jwtHelper = new JwtHelper({
 
 router.post("/", jwtHelper.requireAdminPermission(), handleCreatePayment);
 router.get("/", jwtHelper.requirePermission(), handleGetAllPayments);
+router.get("/wallet", jwtHelper.requireAdminPermission(), handleGetWallet);
 router.get(
   "/:paymentId",
   jwtHelper.requirePermission(),
