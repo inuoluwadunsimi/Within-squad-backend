@@ -2,9 +2,8 @@ import * as mongoose from "mongoose";
 import { Schema } from "mongoose";
 import { config } from "../constants/settings";
 import { v4 as uuidv4 } from "uuid";
-import { type Spaces } from "../interfaces";
 
-const SpacesSchema = new Schema<Spaces>(
+const SchedulesSchema = new Schema(
   {
     _id: {
       type: String,
@@ -12,28 +11,23 @@ const SpacesSchema = new Schema<Spaces>(
         return uuidv4();
       },
     },
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    profileImage: {
+    day: {
       type: String,
       required: true,
     },
-    description: {
-      type: String,
+    time: {
+      type: Date,
+      required: true,
     },
-    spaceCode: {
+    space: {
       type: String,
       required: true,
-      // unique: true,
+      ref: config.mongodb.collections.space,
     },
-    owner: {
-      type: String,
-      required: true,
-      ref: config.mongodb.collections.user,
-    },
-    members: [{ type: String, ref: config.mongodb.collections.user }],
   },
   {
     toObject: {
@@ -56,7 +50,7 @@ const SpacesSchema = new Schema<Spaces>(
   }
 );
 
-export const SpaceDb = mongoose.model(
-  config.mongodb.collections.space,
-  SpacesSchema
+export const SchedulesDb = mongoose.model(
+  config.mongodb.collections.schedule,
+  SchedulesSchema
 );

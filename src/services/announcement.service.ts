@@ -18,6 +18,6 @@ export async function GetAnnouncments(
 ): Promise<Announcement[]> {
   const announcements = await AnnouncementDb.find<Announcement>({
     space: spaceId,
-  });
+  }).sort({ createdAt: -1 });
   return announcements;
 }

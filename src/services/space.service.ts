@@ -78,6 +78,7 @@ export async function joinSpace(body: JoinSpaceRequest): Promise<void> {
   }
 
   space.members.push(user);
+  await space.save();
 }
 
 export async function leaveSpace(body: LeaveSpaceRequest): Promise<void> {

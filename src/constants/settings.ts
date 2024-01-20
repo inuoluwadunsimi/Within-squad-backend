@@ -18,6 +18,7 @@ export const config = {
       walletTransactions: "wallet_transactions",
       announcement: "announcements",
       otp: "otps",
+      schedule: "schedules",
     },
   },
 
