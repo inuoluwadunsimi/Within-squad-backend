@@ -109,8 +109,6 @@ export class JwtHelper {
           );
         }
 
-        console.log(token);
-
         const dbToken = await this.UserTokenDb.findOne({ token });
         console.log(dbToken);
         if (!dbToken) {
@@ -124,7 +122,7 @@ export class JwtHelper {
         const isAdmin = await SpaceDb.findOne<Spaces>({
           owner: decoded.userId,
         });
-        if (isAdmin) {
+        if (!isAdmin) {
           return this.respondError(res, 403, "unauthorized");
         }
 
