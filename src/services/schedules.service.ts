@@ -22,7 +22,6 @@ export async function getAllSchedules(spaceId: string): Promise<Schedule[]> {
 
   const schedules = await SchedulesDb.find<Schedule>({
     space: spaceId,
-    startDate: { $gt: date },
   });
   return schedules;
 }
