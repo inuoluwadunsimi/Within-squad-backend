@@ -8,14 +8,14 @@ export async function handleCreateSchedule(
   res: ExpressResponse
 ): Promise<void> {
   const { spaceId } = req.params;
-  const { title, day, time } = req.body;
+  const { startDate, title, endDate } = req.body;
 
   try {
     await scheduleService.CreateSchedule({
       spaceId,
       title,
-      day,
-      time,
+      startDate,
+      endDate,
     });
     ResponseManager.success(res, { message: "successfully" });
   } catch (err) {
