@@ -57,7 +57,7 @@ export async function getAllSpaces(
   ]);
 
   const memberSpaces = await SpaceDb.find<Spaces>({
-    member: user,
+    members: user,
   }).populate(["owner", "members"]);
 
   return {
