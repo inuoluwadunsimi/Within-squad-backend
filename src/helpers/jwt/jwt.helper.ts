@@ -110,7 +110,6 @@ export class JwtHelper {
         }
 
         const dbToken = await this.UserTokenDb.findOne({ token });
-        console.log(dbToken);
         if (!dbToken) {
           return this.respondError(res, 403, "invalid token");
         }

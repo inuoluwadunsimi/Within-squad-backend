@@ -42,7 +42,6 @@ export async function handleGetAllSpaces(
   const user = req.userId!;
   try {
     const spaces = await spaceService.getAllSpaces(user);
-    console.log(spaces);
     ResponseManager.success(res, { spaces });
   } catch (err: any) {
     ResponseManager.handleError(res, err);

@@ -127,7 +127,7 @@ export async function verifySquadWebhook(props: {
   }
 
   const paymentAttempt = await PaymentAttemptDb.findOne<PaymentAttempt>({
-    transaction_reference: body.Body.transaction_reference,
+    transaction_reference: body.Body.transaction_ref,
   });
   if (!paymentAttempt) {
     throw new BadRequestError("no transaction with this reference");

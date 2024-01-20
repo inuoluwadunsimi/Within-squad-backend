@@ -85,7 +85,6 @@ export class SquadReceiver implements Receiver {
         }
       );
       if (response.status !== 200) {
-        console.log(response);
         new ServiceUnavailableError("service unavailable");
       }
 

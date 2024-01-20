@@ -155,3 +155,63 @@ export async function sendSingleNotification(
     error,
   });
 }
+
+export async function batchNotificatons(payload: ExpoMessage) {
+  const { title, body, user } = payload;
+
+  const tokens: string[] = [];
+  const userAuths = await UserAuthDb.find<UserAuth>({});
+  for (const userAuth of userAuths) {
+    tokens.push(...userAuth.expoToken);
+  }
+
+  const messages = [];
+  for (const token of tokens) {
+    if (!Expo.isExpoPushToken(token)) {
+      console.error(`Invalid Expo Push Token: ${token}`);
+      continue;
+    }
+    messages.push({
+      to: token,
+      title,
+      body,
+    });
+  }
+
+  const chunks = expo.chunkPushNotifications(messages);
+  for (const chunk of chunks) {
+    try {
+      const pushTicket = await expo.sendPushNotificationsAsync(chunk);
+      const ticket = pushTicket[0];
+      let ticketId = "";
+
+      if (ticket.status === "error") {
+        if (ticket.details && ticket.details.error === "DeviceNotRegistered") {
+          await UserAuthDb.updateOne({ user }, { $unset: { expoToken: 1 } });
+        }
+        throw new ServiceUnavailableError(
+          "invalid expoToke | expo service down"
+        );
+      }
+      if (ticket.status === "ok") {
+        ticketId = ticket.id;
+        console.log(`This is the ticket id${ticketId}`);
+      }
+
+      setTimeout(async (): Promise<void> => {
+        const receipt = await expo.getPushNotificationReceiptsAsync([ticketId]);
+
+        const recentReceipt = receipt[Object.keys(receipt)[0]];
+        console.warn(recentReceipt);
+
+        if (recentReceipt.status === "error") {
+          if (recentReceipt.details?.error === "DeviceNotRegistered") {
+            await UserAuthDb.updateOne({ user }, { $unset: { expoToken: 1 } });
+          }
+        }
+      }, delayDuration);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
