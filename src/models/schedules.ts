@@ -19,6 +19,10 @@ const SchedulesSchema = new Schema(
       type: String,
       required: true,
     },
+    date: {
+      type: String,
+      required: true,
+    },
     time: {
       type: Date,
       required: true,

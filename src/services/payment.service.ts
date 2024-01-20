@@ -118,6 +118,8 @@ export async function verifySquadWebhook(props: {
 }): Promise<void> {
   const { body, signature } = props;
 
+  console.log(body);
+
   // condition for unsuccessful webhook not indicated because of issue with abscence in docs
   const isValidSignature = verifyWebhookSignature(body, signature);
   if (!isValidSignature) {
