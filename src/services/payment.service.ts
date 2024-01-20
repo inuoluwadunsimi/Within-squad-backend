@@ -139,16 +139,18 @@ export async function verifySquadWebhook(props: {
   const wallet = await WalletDb.findOne<Wallet>({
     space: paymentAttempt.space,
   });
-  if(!wallet){
-    throw new BadRequestError("no wallet found")
+  if (!wallet) {
+    throw new BadRequestError("no wallet found");
   }
-
-  wallet.available_balance =
 
   if (!wallet) {
     console.log("wahala wahala");
     new BadRequestError("wallet error");
   }
+
+  wallet.available_balance += paymentAttempt.amount;
+  await wallet.save();
+
   await WalletTransactionDb.create({
     space: paymentAttempt.space,
     wallet: wallet!.id,
