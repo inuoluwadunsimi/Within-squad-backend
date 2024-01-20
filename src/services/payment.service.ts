@@ -22,6 +22,12 @@ import { verifyWebhookSignature } from "../payment/helpers";
 import { WalletDb } from "../models/wallet";
 import { ClerkType, WalletTransactionDb } from "../models/wallet.transaction.";
 import { AccountLookupInterface } from "../interfaces/payment/payment.request";
+import { generateOtp } from "../helpers/utils";
+import { OtpDb } from "../models/otp";
+import {
+  OTP,
+  WithdrawOtpConfirmation,
+} from "../interfaces/models/otp.interface";
 
 const payWithSquad = new SquadReceiver();
 
@@ -192,4 +198,49 @@ export async function getAccountName(
   return payWithSquad.accountLookup(body);
 }
 
-export async function requestOtp(spaceId: string): Promise<void> {}
+export async function requestOtp(
+  spaceId: string,
+  user: string
+): Promise<string> {
+  const otp = generateOtp();
+
+  await OtpDb.create({
+    otp,
+    user,
+    space: spaceId,
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+  });
+
+  return otp;
+}
+
+export async function Withdraw(body: WithdrawOtpConfirmation): Promise<void> {
+  const { user, space, otp, amount } = body;
+
+  const otpCorrect = await OtpDb.findOne<OTP>({
+    user,
+    space,
+    otp,
+  });
+  if (!otpCorrect) {
+    throw new BadRequestError("otp is incorrect");
+  }
+
+  const wallet = await WalletDb.findOne<Wallet>({ space });
+  if (!wallet) {
+    throw new BadRequestError("no wallet found");
+  }
+
+  if (wallet.available_balance < amount) {
+    throw new BadRequestError("balance is low");
+  }
+  wallet.available_balance -= amount;
+
+  await WalletTransactionDb.create({
+    space,
+    wallet: wallet.id,
+    status: PaymentStatus.SUCCESS,
+    clerkType: ClerkType.DEBIT,
+    amount,
+  });
+}

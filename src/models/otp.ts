@@ -16,10 +16,20 @@ const OtpSchema = new Schema(
       type: String,
       required: true,
     },
+    user: {
+      type: String,
+      required: true,
+      ref: config.mongodb.collections.user,
+    },
     space: {
       type: String,
       required: true,
       ref: config.mongodb.collections.otp,
+    },
+    expiresAt: {
+      type: Date,
+      default: Date.now(),
+      index: { expires: "10m" },
     },
   },
   {

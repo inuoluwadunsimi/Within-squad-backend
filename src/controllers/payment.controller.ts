@@ -146,3 +146,37 @@ export async function handleGetAccountName(
     ResponseManager.handleError(res, err);
   }
 }
+
+export async function handleRequestOtp(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { spaceId } = req.params;
+  const user = req.userId!;
+  try {
+    const otp = await paymentService.requestOtp(spaceId, user);
+    ResponseManager.success(res, { otp });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}
+
+export async function handleWithdraw(
+  req: IExpressRequest,
+  res: ExpressResponse
+): Promise<void> {
+  const { spaceId } = req.params;
+  const { otp, amount } = req.body;
+  const user = req.userId!;
+  try {
+    await paymentService.Withdraw({
+      user,
+      space: spaceId,
+      otp,
+      amount,
+    });
+    ResponseManager.success(res, { message: "successfully withdrawn" });
+  } catch (err) {
+    ResponseManager.handleError(res, err);
+  }
+}

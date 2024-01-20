@@ -14,7 +14,15 @@ const jwtHelper = new JwtHelper({
   UserTokenDb,
 });
 
-router.post("/", jwtHelper.requireAdminPermission(), handleMakeAnnouncement);
-router.get("/", jwtHelper.requirePermission(), handleGetAnnouncements);
+router.post(
+  "/:spaceId/announcements",
+  jwtHelper.requireAdminPermission(),
+  handleMakeAnnouncement
+);
+router.get(
+  "/:spaceId/announcements",
+  jwtHelper.requirePermission(),
+  handleGetAnnouncements
+);
 
 export default router;
