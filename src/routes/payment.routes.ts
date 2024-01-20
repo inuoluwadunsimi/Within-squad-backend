@@ -11,6 +11,8 @@ import {
   handleGetWallet,
   handleGetWalletTransactions,
   handleMakePayment,
+  handleRequestOtp,
+  handleWithdraw,
 } from "../controllers";
 
 const router = express.Router({ mergeParams: true });
@@ -47,7 +49,19 @@ router.get(
 
 router.post(
   "/wallet/accountName",
-  jwtHelper.requirePermission(),
+  jwtHelper.requireAdminPermission(),
   handleGetAccountName
+);
+
+router.post(
+  "/wallet/otp",
+  jwtHelper.requireAdminPermission(),
+  handleRequestOtp
+);
+
+router.post(
+  "/wallet/withdraw",
+  jwtHelper.requireAdminPermission(),
+  handleWithdraw
 );
 export default router;

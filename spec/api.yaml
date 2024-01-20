@@ -363,6 +363,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Otp"
+  /spaces/space/{spaceId}/wallet/withdraw:
+    parameters:
+      - $ref: "#/components/parameters/AuthToken"
+      - $ref: "#/components/parameters/SpaceID"
+    post:
+      tags:
+        - wallet
+        - payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WithdrawalRequest"
+      responses:
+        "200":
+          description: "success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DefaultResponse"
+
+
   /spaces/space/{spaceId}/announcements:
     parameters:
       - $ref: "#/components/parameters/SpaceID"
@@ -667,6 +689,14 @@ components:
           type: string
         bank_code:
           type: string
+    WithdrawalRequest:
+      properties:
+        otp:
+          type: string
+        amount:
+          type: number
+
+
 
 
 
