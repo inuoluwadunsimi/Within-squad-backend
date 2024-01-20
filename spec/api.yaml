@@ -323,7 +323,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WalletTransactions"
+                items:
+                  $ref: "#/components/schemas/WalletTransactions"
   /spaces/space/{spaceId}/payment/wallet/accountName:
     parameters:
       - $ref: "#/components/parameters/SpaceID"
@@ -688,6 +689,8 @@ components:
           type: string
         reason:
           type: string
+        payment:
+          $ref: "#/components/schemas/Payment"
 
     Otp:
       type: string
