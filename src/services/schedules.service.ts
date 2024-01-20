@@ -7,12 +7,12 @@ import { SchedulesDb } from "../models/schedules";
 export async function CreateSchedule(
   body: CreateScheduleInterface
 ): Promise<void> {
-  const { title, day, time, spaceId } = body;
+  const { title, startDate, endDate, spaceId } = body;
 
   await SchedulesDb.create({
     title,
-    day,
-    time,
+    startDate,
+    endDate,
     space: spaceId,
   });
 }
@@ -22,7 +22,7 @@ export async function getAllSchedules(spaceId: string): Promise<Schedule[]> {
 
   const schedules = await SchedulesDb.find<Schedule>({
     space: spaceId,
-    time: { $gt: date },
+    startDate: { $gt: date },
   });
   return schedules;
 }

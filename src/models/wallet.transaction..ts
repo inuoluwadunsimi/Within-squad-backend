@@ -22,6 +22,11 @@ const WalletTransactionSchema = new Schema(
       required: true,
       ref: config.mongodb.collections.space,
     },
+    payment: {
+      type: String,
+      required: true,
+      ref: config.mongodb.collections.payment,
+    },
     wallet: {
       type: String,
       required: true,

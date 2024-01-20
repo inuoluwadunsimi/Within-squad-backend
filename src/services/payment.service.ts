@@ -151,12 +151,15 @@ export async function verifySquadWebhook(props: {
   wallet.available_balance += paymentAttempt.amount;
   await wallet.save();
 
+  const userDetails = await UserDb.findOne<User>({ _id: paymentAttempt.user });
+
   await WalletTransactionDb.create({
     space: paymentAttempt.space,
     wallet: wallet!.id,
     status: PaymentStatus.SUCCESS,
     clerkType: ClerkType.CREDIT,
-    reason: `payment from ${paymentAttempt.user} `,
+    payment: paymentAttempt.payment,
+    reason: `payment from ${userDetails!.fullName} `,
     amount: paymentAttempt.amount,
   });
   return;
@@ -181,7 +184,9 @@ export async function getWalletTransactions(
     {
       space: spaceId,
     }
-  ).select("-space -wallet -status ");
+  )
+    .select("-space -wallet -status ")
+    .populate("payment");
 
   return walletTransactions;
 }

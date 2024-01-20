@@ -15,12 +15,9 @@ const SchedulesSchema = new Schema(
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
+
     startDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     endDate: {
